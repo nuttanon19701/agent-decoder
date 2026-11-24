@@ -252,7 +252,6 @@ async function sha256(text) {
 
 const $ = id => document.getElementById(id);
 const form = $("f"), codeIn = $("code"), secretIn = $("secret");
-let lastOk = false;
 
 const ICONS = {
   ok:  '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/><path d="M9 16l2 2 4-4"/>',
@@ -260,7 +259,6 @@ const ICONS = {
 };
 
 function showPopup(ok, code) {
-  lastOk = ok;
   $("pop").className = "pop" + (ok ? "" : " bad");
   $("popIcon").innerHTML = ok ? ICONS.ok : ICONS.bad;
   $("popTag").textContent = ok ? "ACCESS GRANTED" : "ACCESS DENIED";
@@ -276,8 +274,7 @@ function showPopup(ok, code) {
 function closePopup() {
   $("overlay").classList.remove("show");
   $("emblem").classList.remove("unlocked");
-  if (lastOk) { form.reset(); codeIn.focus(); }   // clear for the next team
-  else { secretIn.focus(); secretIn.select(); }
+  form.reset(); codeIn.focus();   // always clear for the next team
 }
 
 form.addEventListener("submit", async e => {
